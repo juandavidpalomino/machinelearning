@@ -1,9 +1,14 @@
-package eu.redzoo.ml;
+package old;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import machinelearning.ZData;
+import machinelearning.FeaturesScaling;
+import machinelearning.Graph;
+import machinelearning.Learner;
+import machinelearning.LinearRegressionFunction;
 
 
 public class FunctionBalancedExample {
@@ -11,8 +16,8 @@ public class FunctionBalancedExample {
     public static void main(String[] args) throws IOException {
 
         // load the labels and features
-        List<Double> labels = Data.loadLabels("/house_price_berlin_data.txt");
-        List<Double[]> datasetFile = Data.loadFeaturesList("/house_price_berlin_data.txt");
+        List<Double> labels = ZData.loadLabels("/house_price_berlin_data.txt");
+        List<Double[]> datasetFile = ZData.loadFeaturesList("/house_price_berlin_data.txt");
         List<Double[]> dataset = datasetFile.stream().map(features -> new Double[] { 1.0, features[0], Math.pow(features[0], 2)}).collect(Collectors.toList());
 
 
@@ -34,7 +39,7 @@ public class FunctionBalancedExample {
 
 
         // print some graphs
-        Graph graph = Graph.create(Data.getFirstColumn(datasetFile), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
+        Graph graph = Graph.create(ZData.getFirstColumn(datasetFile), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
         final LinearRegressionFunction func = targetFunction;
         graph.addLine("plain", x -> func.apply(scalingFunc.apply(new Double[] { 1.0, x, Math.pow(x, 2) })));
         graph.display();

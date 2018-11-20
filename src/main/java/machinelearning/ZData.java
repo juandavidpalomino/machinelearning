@@ -1,4 +1,4 @@
-package eu.redzoo.ml;
+package machinelearning;
 
 
 import java.io.File;
@@ -16,15 +16,15 @@ import com.google.common.base.Splitter;
 
 
 // helper class to load example data
-public class Data {
+public class ZData {
 
     public static List<Double[]> load(String name) {
         try {
-            List<String> records = Files.readAllLines(new File(Data.class.getResource(name).getFile()).toPath());
+            List<String> records = Files.readAllLines(new File(ZData.class.getResource(name).getFile()).toPath());
             return records.stream()
                     .map(String::trim)
                     .filter(record -> !record.startsWith("#"))
-                    .map(Data::split)
+                    .map(ZData::split)
                     .collect(Collectors.toList());
         } catch (IOException ioe) {
             throw new UncheckedIOException(ioe);
@@ -32,12 +32,12 @@ public class Data {
     }
 
     public static List<Double[]> loadFeaturesList(String name) {
-        List<Double[]> data = Data.load(name);
+        List<Double[]> data = ZData.load(name);
         return removeLastColumn(data);
     }
 
     public static List<Double> loadLabels(String name) {
-        List<Double[]> data = Data.load(name);
+        List<Double[]> data = ZData.load(name);
         return getLastColumn(data);
     }
 

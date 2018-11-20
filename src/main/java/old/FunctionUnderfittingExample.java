@@ -1,10 +1,15 @@
-package eu.redzoo.ml;
+package old;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import machinelearning.FCost;
+import machinelearning.ZData;
+import machinelearning.Graph;
+import machinelearning.Learner;
+import machinelearning.LinearRegressionFunction;
 
 
 public class FunctionUnderfittingExample {
@@ -12,8 +17,8 @@ public class FunctionUnderfittingExample {
     public static void main(String[] args) throws IOException {
 
         // load the labels and features
-        List<Double> labels = Data.loadLabels("/house_price_berlin_data.txt");
-        List<Double[]> dataset = Data.loadFeaturesList("/house_price_berlin_data.txt");
+        List<Double> labels = ZData.loadLabels("/house_price_berlin_data.txt");
+        List<Double[]> dataset = ZData.loadFeaturesList("/house_price_berlin_data.txt");
 
         // add the fist 1.0 column
         List<Double[]>  extendedDataset = dataset.stream().map(features -> new Double[] { 1.0, features[0]}).collect(Collectors.toList());
@@ -30,7 +35,7 @@ public class FunctionUnderfittingExample {
             targetFunction = Learner.train(targetFunction, extendedDataset, labels, 0.00000002);
 
             // save the cost of new function
-            costHistory.put(i+1.0, Cost.cost(targetFunction, extendedDataset, labels));
+            costHistory.put(i+1.0, FCost.cost(targetFunction, extendedDataset, labels));
         }
 
 
@@ -42,7 +47,7 @@ public class FunctionUnderfittingExample {
         Graph costGraph = Graph.create(costHistory, "cost curve", "cost", "iterations");
         costGraph.display();
 
-        Graph graph = Graph.create(Data.getFirstColumn(dataset), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
+        Graph graph = Graph.create(ZData.getFirstColumn(dataset), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
         final LinearRegressionFunction func = targetFunction;
         graph.addLine("plain", x -> func.apply(new Double[] { 1.0, x }));
         graph.display();

@@ -1,9 +1,14 @@
-package eu.redzoo.ml;
+package old;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import machinelearning.ZData;
+import machinelearning.FeaturesScaling;
+import machinelearning.Graph;
+import machinelearning.Learner;
+import machinelearning.LinearRegressionFunction;
 
 
 public class FunctionOverfittingExample {
@@ -11,8 +16,8 @@ public class FunctionOverfittingExample {
     public static void main(String[] args) throws IOException {
 
         // load the labels and features
-        List<Double> labels = Data.loadLabels("/house_price_berlin_data.txt");
-        List<Double[]> dataset = Data.loadFeaturesList("/house_price_berlin_data.txt");
+        List<Double> labels = ZData.loadLabels("/house_price_berlin_data.txt");
+        List<Double[]> dataset = ZData.loadFeaturesList("/house_price_berlin_data.txt");
 
         // add the fist 1.0 column
         List<Double[]>  extendedDataset = dataset.stream().map(features -> new Double[] { 1.0, features[0]}).collect(Collectors.toList());
@@ -33,7 +38,7 @@ public class FunctionOverfittingExample {
         }
 
         // print some graphs
-        Graph graph = Graph.create(Data.getFirstColumn(dataset), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
+        Graph graph = Graph.create(ZData.getFirstColumn(dataset), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
         final LinearRegressionFunction func = targetFunction;
         graph.addLine("plain", x -> func.apply(scalingFunc.apply(new Double[] { 1.0, x, Math.pow(x, 2), Math.pow(x, 3), Math.pow(x, 4), Math.pow(x, 5) })));
         graph.display();

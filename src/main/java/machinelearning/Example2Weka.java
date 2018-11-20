@@ -1,4 +1,4 @@
-package eu.redzoo.ml;
+package machinelearning;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WekaLinearRegression {
+public class Example2Weka {
 
     public static void main(String[] args) throws Exception {
 
@@ -30,29 +30,37 @@ public class WekaLinearRegression {
 
 
         // load the labels and features
-        labels = Data.loadLabels("/house_price_berlin_data.txt");
-        featuresList = Data.loadFeaturesList("/house_price_berlin_data.txt");
+        labels = ZData.loadLabels("/example2.txt");
+        featuresList = ZData.loadFeaturesList("/example2.txt");
 
 
         // build the features list
         ArrayList<Attribute> attributes = new ArrayList<>();
-        Attribute sizeAttribute = new Attribute("sizeFeature");
-        attributes.add(sizeAttribute);
+        Attribute att1 = new Attribute("metros");
+        attributes.add(att1);
 
-        Attribute squaredSizeAttribute = new Attribute("squaredSizeFeature");
-        attributes.add(squaredSizeAttribute);
+        Attribute att2 = new Attribute("habitaciones");
+        attributes.add(att2);
+
+        Attribute att3 = new Attribute("banos");
+        attributes.add(att3);
+
+        Attribute att4 = new Attribute("garajes");
+        attributes.add(att4);
 
         Attribute priceAttribute = new Attribute("priceLabel");
         attributes.add(priceAttribute);
 
 
-        Instances trainingSet = new Instances("trainData", attributes, 13);
+        Instances trainingSet = new Instances("trainData", attributes, 10);
         trainingSet.setClassIndex(trainingSet.numAttributes() - 1);
 
-        Instance instance = new DenseInstance(3);
-        instance.setValue(sizeAttribute, 90.0);
-        instance.setValue(squaredSizeAttribute, Math.pow(90.0, 2));
-        instance.setValue(priceAttribute, 249.0);
+        Instance instance = new DenseInstance(5);
+        instance.setValue(att1, 100.0);
+        instance.setValue(att2, 1.0);
+        instance.setValue(att3, 2.0);
+        instance.setValue(att4, 1.0);
+        instance.setValue(priceAttribute, 135646923);
         trainingSet.add(instance);
 
 
@@ -60,9 +68,11 @@ public class WekaLinearRegression {
         dataset.setClassIndex(dataset.numAttributes() - 1);
 
         for (int i = 0; i < featuresList.size(); i++) {
-            instance = new DenseInstance(3);
-            instance.setValue(sizeAttribute, featuresList.get(i)[0]);
-            instance.setValue(squaredSizeAttribute, Math.pow(featuresList.get(i)[0], 2));
+            instance = new DenseInstance(5);
+            instance.setValue(att1, featuresList.get(i)[0]);
+            instance.setValue(att2, featuresList.get(i)[1]);
+            instance.setValue(att3, featuresList.get(i)[2]);
+            instance.setValue(att4, featuresList.get(i)[3]);
             instance.setValue(priceAttribute, labels.get(i));
             dataset.add(instance);
         }
@@ -86,28 +96,30 @@ public class WekaLinearRegression {
         // predict
         Instances unlabeledInstances = new Instances("trainData", attributes, 1);
         unlabeledInstances.setClassIndex(trainingSet.numAttributes() - 1);
-        Instance unlabeled = new DenseInstance(3);
-        unlabeled.setValue(sizeAttribute, 1200.0);
-        unlabeled.setValue(squaredSizeAttribute, Math.pow(1200.0, 2));
+        Instance unlabeled = new DenseInstance(4);
+        unlabeled.setValue(att1, 500.0);
+        unlabeled.setValue(att2, 5.0);
+        unlabeled.setValue(att3, 4.0);
+        unlabeled.setValue(att4, 3.0);
         unlabeledInstances.add(unlabeled);
 
         double prediction  = targetFunction.classifyInstance(unlabeledInstances.get(0));
-        System.out.println(prediction);
+        System.out.printf("Pred: %.01f\n", prediction);
 
 
-        Graph graph = Graph.create(Data.getFirstColumn(featuresList), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
-        graph.addLine("weka", x -> {
-            try {
-                Instance inst = new DenseInstance(3);
-                inst.setValue(sizeAttribute, x);
-                inst.setValue(squaredSizeAttribute, Math.pow(x, 2));
-                return targetFunction.classifyInstance(inst);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+//        Graph graph = Graph.create(Data.getFirstColumn(featuresList), labels, "house prices", "Price(€) in 1000´s", "Size in m²");
+//        graph.addLine("weka", x -> {
+//            try {
+//                Instance inst = new DenseInstance(3);
+//                inst.setValue(sizeAttribute, x);
+//                inst.setValue(squaredSizeAttribute, Math.pow(x, 2));
+//                return targetFunction.classifyInstance(inst);
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
 
-        graph.display();
+//        graph.display();
     }
 }
 

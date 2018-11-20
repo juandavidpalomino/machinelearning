@@ -1,4 +1,4 @@
-package eu.redzoo.ml;
+package machinelearning;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -11,17 +11,9 @@ public class LinearRegressionFunction implements Function<Double[], Double> {
         this.thetaVector = Arrays.copyOf(thetaVector, thetaVector.length);
     }
 
+    @Override
     public Double apply(Double[] featureVector) {
-        // for computational reasons the first element has to be 1.0
-        assert featureVector[0] == 1.0;
-
-        // simple, sequential implementation
-        double prediction = 0;
-        for (int j = 0; j < thetaVector.length; j++) {
-            prediction += thetaVector[j] * featureVector[j];
-        }
-
-        return prediction;
+       return 0.0;
     }
 
     public double[] getThetas() {
@@ -45,16 +37,28 @@ public class LinearRegressionFunction implements Function<Double[], Double> {
 
     public static void main(String[] args) throws IOException {
 
-        // the theta vector is the output of the learn process
-        double[] thetaVector = new double[] { 1.004579, 5.286822 };
-        LinearRegressionFunction targetFunction = new LinearRegressionFunction(thetaVector);
-
-        // calling the
-        Double[] featureVector = new Double[] { 1.0, 1330.0 };
-        double predictedPrice = targetFunction.apply(featureVector);
-
-
-
-        System.out.println(predictedPrice);
+        
     }
 }
+
+
+//// for computational reasons the first element has to be 1.0
+//        assert featureVector[0] == 1.0;
+//
+//        // simple, sequential implementation
+//        double prediction = 0;
+//        for (int j = 0; j < thetaVector.length; j++) {
+//            prediction += thetaVector[j] * featureVector[j];
+//        }
+//
+//        return prediction;
+
+//// the theta vector is the output of the learn process
+//        double[] thetaVector = new double[] { 1.004579, 5.286822 };
+//        LinearRegressionFunction targetFunction = new LinearRegressionFunction(thetaVector);
+//
+//        // calling the
+//        Double[] featureVector = new Double[] { 1.0, 1330.0 };
+//        double predictedPrice = targetFunction.apply(featureVector);
+//
+//        System.out.println(predictedPrice);

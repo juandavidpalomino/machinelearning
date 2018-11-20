@@ -1,4 +1,4 @@
-package eu.redzoo.ml;
+package machinelearning;
 
 
 import java.util.List;

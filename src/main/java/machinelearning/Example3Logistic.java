@@ -1,4 +1,4 @@
-package eu.redzoo.ml;
+package machinelearning;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.functions.Logistic;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WekaLogisticRegression {
+public class Example3Logistic {
 
     public static void main(String[] args) throws Exception {
 
@@ -45,8 +45,8 @@ public class WekaLogisticRegression {
         dataset.setClassIndex(dataset.numAttributes() - 1);
 
         // load the labels and features
-        List<Double> labels = Data.loadLabels("/house_berlin_bestseller.txt");
-        List<Double[]> featuresList = Data.loadFeaturesList("/house_berlin_bestseller.txt");
+        List<Double> labels = ZData.loadLabels("/example3.txt");
+        List<Double[]> featuresList = ZData.loadFeaturesList("/example3.txt");
 
         for (int i = 0; i < featuresList.size(); i++) {
             instance = new DenseInstance(3);
